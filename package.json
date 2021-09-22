@@ -1,0 +1,29 @@
+{
+  "name": "shengenbot",
+  "version": "0.1.0",
+  "description": "A private discord bot",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc": "tsc",
+    "build": "npm run tsc",
+    "start": "npm run build && node -r dotenv/config dist/index.js"
+  },
+  "author": "paysis",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "discord.js": "^13.1.0",
+    "dotenv": "^10.0.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.31.2",
+    "@typescript-eslint/parser": "^4.31.2",
+    "eslint": "^7.32.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "2.4.1",
+    "typescript": "^4.4.3"
+  }
+}
