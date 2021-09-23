@@ -2,24 +2,11 @@ import { Client, Intents } from "discord.js";
 import eventInterface from "./interfaces/eventInterface.js";
 import { eventFnType } from "./types/eventTypes.js";
 import fs from "fs";
+import clientGenerator from "./util/getClient.js";
 
 import getEnv from "./util/getEnv.js";
 
-const TOKEN = getEnv();
-
-const client = new Client({
-  intents: [
-    Intents.FLAGS.GUILDS,
-    Intents.FLAGS.GUILD_MEMBERS,
-    Intents.FLAGS.GUILD_MESSAGES,
-    Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
-    Intents.FLAGS.GUILD_MESSAGE_TYPING,
-    Intents.FLAGS.GUILD_PRESENCES,
-    Intents.FLAGS.GUILD_INVITES,
-    Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS,
-    Intents.FLAGS.GUILD_BANS,
-  ],
-});
+const client = clientGenerator.client;
 
 const eventFiles = fs
   .readdirSync("./events")
@@ -42,5 +29,3 @@ for (const file of eventFiles) {
     client.on(event.name, cb);
   }
 }
-
-client.login(TOKEN);

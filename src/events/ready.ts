@@ -1,4 +1,5 @@
 import { Client } from "discord.js";
+import deployCommands from "../util/deployCommands.js";
 
 /**
  * Gets invoked when discord client instance is ready.
@@ -7,6 +8,8 @@ import { Client } from "discord.js";
 async function ready(client: Client): Promise<void> {
   if (client && client.user) {
     console.log(`${client.user.tag} is ready.`);
+
+    deployCommands();
   }
 }
 

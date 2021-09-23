@@ -1,26 +1,29 @@
+import envInterface from "../interfaces/envInterface.js";
+
 /**
  * Process .env file
  *
  * TOKEN=here-goes-the-discord-bot-token
+ *
  * OUTDIR=dist
  *
- * @returns {(string|null)} TOKEN or null.
+ * @returns {envInterface} an object containing .env properties.
  * @throws Will throw if either TOKEN or OUTDIR doesn't exist.
  */
-export default function getEnv(): string {
-  const TOKEN = process.env.TOKEN;
-  const OUTDIR = process.env.OUTDIR;
+export default function getEnv(): envInterface {
+  const token = process.env.TOKEN;
+  const outdir = process.env.OUTDIR;
 
   try {
-    if (OUTDIR) {
-      process.chdir(OUTDIR);
+    if (outdir) {
+      process.chdir(outdir);
     } else {
       throw new Error(
         "OUTDIR environment variable does not exist. Please use .env file in top-level project directory."
       );
     }
 
-    if (!TOKEN) {
+    if (!token) {
       throw new Error(
         `TOKEN environment variable does not exist. Please use .env file in top-level project directory.`
       );
@@ -30,5 +33,5 @@ export default function getEnv(): string {
     throw err;
   }
 
-  return TOKEN;
+  return { token, outdir };
 }
