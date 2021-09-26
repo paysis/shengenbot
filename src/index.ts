@@ -1,12 +1,21 @@
-import { Client, Intents } from "discord.js";
 import eventInterface from "./interfaces/eventInterface.js";
 import { eventFnType } from "./types/eventTypes.js";
 import fs from "fs";
 import clientGenerator from "./util/getClient.js";
-
+import { Command } from "discord.js";
 import getEnv from "./util/getEnv.js";
 
-const client = clientGenerator.client;
+const client = clientGenerator.client!;
+
+const commandFiles = fs
+  .readdirSync("./commands")
+  .filter((file) => file.endsWith(".js"));
+
+for (const file of commandFiles) {
+  const command: Command = await import(`./commands/${file}`);
+
+  client.commands.set(command.data.name, command);
+}
 
 const eventFiles = fs
   .readdirSync("./events")

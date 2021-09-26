@@ -1,34 +1,45 @@
 import { Sequelize } from "sequelize";
+import getTables from "./createTables";
+class DatabaseStore {
+  static instance: null | DatabaseStore = null;
 
-/**
- * Create and maintain database connection.
- *
- * @returns {object} a object which contains database instance inside.
- */
-function getDatabase() {
-  let instance: Sequelize;
-  console.log("[DEBUG] getDatabase got invoked!");
-  function createInstance() {
-    const sequelize = new Sequelize("database", "user", "password", {
-      host: "localhost",
-      dialect: "sqlite",
-      logging: false,
-      storage: "database.sqlite",
-    });
-    return sequelize;
+  _database: Sequelize | undefined;
+
+  constructor() {
+    if (!DatabaseStore.instance) {
+      this._database = new Sequelize("database", "user", "password", {
+        host: "localhost",
+        dialect: "sqlite",
+        logging: false, //TODO: add LOGGING mechanism
+        storage: "database.sqlite",
+      });
+
+      DatabaseStore.instance = this;
+    }
+
+    return DatabaseStore.instance;
   }
 
-  return {
-    get database() {
-      if (!instance) {
-        instance = createInstance();
-      }
+  static init() {
+    return (async function () {
+      const store = new DatabaseStore();
 
-      return instance;
-    },
-  };
+      await store.buildModels();
+
+      return store;
+    })();
+  }
+
+  async buildModels() {
+    if (this.instance) await getTables(this.instance);
+  }
+
+  get instance() {
+    return this._database;
+  }
 }
 
-const databaseGenerator = getDatabase();
+const instance = await DatabaseStore.init();
+//Object.freeze(instance);
 
-export default databaseGenerator;
+export default instance; //instance.instance is database

@@ -9,7 +9,7 @@ async function ready(client: Client): Promise<void> {
   if (client && client.user) {
     console.log(`${client.user.tag} is ready.`);
 
-    deployCommands();
+    await deployCommands();
   }
 }
 
